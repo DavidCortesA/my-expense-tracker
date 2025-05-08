@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+
+:root {
+  /* Paleta base basada en tu logo */
+  --color-primary: #4CAF50; /* Verde Principal */
+  --color-primary-light: #81C784;
+  --color-primary-dark: #388E3C;
+
+  --color-background: #FFFFFF;
+  --color-background-soft: #F1F8F5;
+  --color-background-mute: #E0E0E0;
+
+  --color-border: #E0E0E0;
+  --color-border-hover: #BDBDBD;
+
+  --color-heading: #2E7D32;
+  --color-text: #333333;
+  --color-text-secondary: #666666;
+  --color-accent: #4CAF50;
+  --color-accent-light: #81C784;
+
+  --sidebar-background: var(--color-background-soft);
+  --sidebar-text: var(--color-text);
+  --sidebar-active-background: var(--color-primary);
+  --sidebar-active-text: #ffffff;
+
+  --dashboard-widget-background: var(--color-background);
+
+  --font-family-base: 'Open Sans', sans-serif;
+}
+
+/* Modo oscuro */
+.my-app-dark {
+  --color-background: #121212;
+  --color-background-soft: #1E1E1E;
+  --color-background-mute: #2C2C2C;
+
+  --color-border: #333333;
+  --color-border-hover: #444444;
+
+  --color-heading: #81C784;
+  --color-text: #CCCCCC;
+  --color-text-secondary: #AAAAAA;
+  --color-accent: #81C784;
+  --color-accent-light: #A5D6A7;
+
+  --sidebar-background: #1E1E1E;
+  --sidebar-text: var(--color-text);
+  --sidebar-active-background: var(--color-primary-light);
+  --sidebar-active-text: #ffffff;
+
+  --dashboard-widget-background: #1E1E1E;
+}
+
+
+/* Variables semánticas para el modo oscuro */
+/* Estilos base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}

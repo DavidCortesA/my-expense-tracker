@@ -1,0 +1,26 @@
+@import './themes.css';
+
+/* Aplica dark-mode si <html class="my-app-dark"> existe */
+html {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.my-app-dark body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.my-app-dark body {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.my-app-dark h1,
+.my-app-dark h2,
+.my-app-dark h3,
+.my-app-dark h4,
+.my-app-dark h5,
+.my-app-dark h6 {
+  color: var(--color-heading);
+}
+

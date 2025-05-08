@@ -1,0 +1,21 @@
+/* Importar las variables de tema */
+@import './themes.css';
+
+/* Estilos generales de la aplicación */
+html {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+body {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+}

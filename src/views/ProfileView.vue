@@ -1,0 +1,3 @@
+<template>
+  <h1>Perfil de Usuario</h1>
+</template>
