@@ -1,31 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
-const visible = defineModel<boolean>('visible');
+const props = defineProps<{
+  category: IncomeCategory | null
+}>();
 const emit = defineEmits(['save']);
 
-const category = ref({
-  name: '',
-  date: new Date().toISOString().slice(0, 10) // Fecha por defecto formato YYYY-MM-DD
-});
+const name = ref('');
 
-const saveCategory = () => {
-  emit('save', category.value);
-  visible.value = false;
+watch(() => props.category, (newCategory) => {
+  name.value = newCategory ? newCategory.name : '';
+}, { immediate: true });
+
+const save = () => {
+  emit('save', { name: name.value });
 };
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <div>
-      <label class="block mb-1 text-sm font-medium">Category Name</label>
-      <InputText v-model="category.name" class="w-full" />
+      <label class="block !mb-4 text-sm font-medium">Category Name</label>
+      <InputText v-model="name" class="w-full" />
     </div>
 
-    <div class="flex justify-end gap-2 mt-4 w-full">
-      <Button label="Save" @click="saveCategory" class="w-full" />
+    <div class="flex justify-end gap-2 mt-4">
+      <Button label="Save" class="w-full" @click="save" />
     </div>
   </div>
 </template>

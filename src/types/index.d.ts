@@ -25,26 +25,28 @@ interface LoginValues {
 interface Income {
   title: string;
   amount: number;
-  date: string;
+  date: Date;
   category: string;
+  id?: string
 }
 
 interface Expense {
   title: string;
   amount: number;
-  date: string;
+  date: Date;
   category: string;
+  id?: string
 }
 
 interface IncomeCategory {
-  id: string;
   name: string;
   createdAt: Date;
-  updatedAt: Date;
+  id?: string;
+  updatedAt?: Date;
 }
 interface ExpenseCategory {
   name: string;
-  createdAt: string;
+  createdAt: Date;
   id?: string;
   updatedAt?: Date;
 }

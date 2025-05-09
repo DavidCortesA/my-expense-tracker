@@ -1,42 +1,94 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import Button from 'primevue/button';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import DialogInput from '../Dialog/DialogInput.vue';
-import AddIncome from './AddIncome.vue';
+import { ref } from 'vue'
+import Button from 'primevue/button'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import DialogInput from '../Dialog/DialogInput.vue'
+import AddIncome from './AddIncome.vue'
+import { useLocalStorage } from '@/composables/useLocalStorage'
+import { useFormatData } from '@/composables/useResetDates'
+import { useFormatAmount } from '@/composables/useResetAmounts'
 
-const props = defineProps({
-  incomes: {
-    type: Array,
-    required: true
+const { formatDate } = useFormatData()
+const { formatAmount } = useFormatAmount()
+
+const isDialogOpen = ref(false)
+const editingItem = ref<Income | null>(null)
+
+const expenses = useLocalStorage<Income[]>('income', [])
+const categories = useLocalStorage<IncomeCategory[]>('incomeCategory', []) // 🟢 Obtener categorías
+
+const handleSave = (item: Income) => {
+  if (editingItem.value) {
+    const index = expenses.value.findIndex((income) => income.id === item.id)
+    if (index !== -1) {
+      expenses.value[index] = { ...item, date: new Date(item.date) }
+    }
+  } else {
+    expenses.value.push({ ...item, date: new Date(item.date) })
   }
-});
-const emit = defineEmits(['add-income']); // 👈 emitimos evento
+  isDialogOpen.value = false
+  editingItem.value = null
+}
 
-const isDialogOpen = ref(false);
+const handleDelete = (item: Income) => {
+  const index = expenses.value.findIndex((income) => income.id === item.id)
+  if (index !== -1) {
+    expenses.value.splice(index, 1)
+  }
+}
 
-const handleSave = (income: Income) => {
-  emit('add-income', income); // 👈 emitimos al padre
-  isDialogOpen.value = false;
-};
+const openEditDialog = (item: Expense) => {
+  editingItem.value = item
+  isDialogOpen.value = true
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex justify-end gap-2 mt-4 w-full">
-      <Button label="Add Income" icon="pi pi-plus" class="!rounded-full" @click="isDialogOpen = true" />
+      <Button
+        label="Add Expense"
+        icon="pi pi-plus"
+        class="!rounded-full"
+        @click="isDialogOpen = true"
+      />
     </div>
 
-    <DataTable :value="props.incomes" :paginator="true" :rows="10" tableStyle="min-width: 100%">
+    <DataTable :value="expenses" :paginator="true" :rows="10" tableStyle="min-width: 100%">
       <Column field="title" header="Title" />
-      <Column field="amount" header="Amount" />
-      <Column field="date" header="Date" />
+      <Column header="Amount">
+        <template #body="slotProps">
+          {{ formatAmount(slotProps.data.amount) }}
+        </template>
+      </Column>
+      <Column header="Date">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.date) }}
+        </template>
+      </Column>
       <Column field="category" header="Category" />
+      <Column header="Actions">
+        <template #body="slotProps">
+          <div class="flex gap-2">
+            <Button
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-info"
+              @click="openEditDialog(slotProps.data)"
+            />
+            <Button
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+              @click="handleDelete(slotProps.data)"
+            />
+          </div>
+        </template>
+      </Column>
     </DataTable>
-  </div>
 
-  <DialogInput v-model:visible="isDialogOpen" :title="'Add Income'">
-    <AddIncome @save="handleSave" />
-  </DialogInput>
+    <DialogInput v-model:visible="isDialogOpen" title="Add Income">
+      <!-- 🔥 Pasa las categorías -->
+      <AddIncome @save="handleSave" :categories="categories" :income="editingItem" />
+    </DialogInput>
+  </div>
 </template>
